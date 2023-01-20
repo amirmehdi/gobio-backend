@@ -2,7 +2,7 @@ import os
 
 import boto3
 
-from lib.decorators import cors_headers, json_http_resp
+from utils.decorators import cors_headers, json_http_resp
 
 s3 = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')

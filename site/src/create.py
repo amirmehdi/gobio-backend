@@ -3,7 +3,7 @@ from datetime import datetime
 
 import boto3
 
-from lib.decorators import cors_headers, json_http_resp, load_json_body
+from utils.decorators import cors_headers, json_http_resp, load_json_body
 
 dynamodb = boto3.resource('dynamodb')
 sites_table = dynamodb.Table(os.environ['SITES_TABLE'])

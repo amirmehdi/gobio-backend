@@ -2,7 +2,7 @@ import os
 
 import boto3
 
-from lib.decorators import json_http_resp
+from utils.decorators import json_http_resp
 
 dynamodb = boto3.resource('dynamodb')
 sites_table = dynamodb.Table(os.environ['SITES_TABLE'])
