@@ -1,0 +1,107 @@
+service: gobio-site
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: python3.9
+  stage: dev
+  profile: default
+  memorySize: 128
+  timeout: 5
+  versionFunctions: true
+
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:Query
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - ${param:sitesTableArn}
+            - ${param:userSitesTableArn}
+
+        - Effect: "Allow"
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+          Resource:
+            - arn:aws:s3:::${param:sitesBucketName}/*
+
+  httpApi:
+    id: ${param:HttpApiId}
+
+  environment:
+    SITES_TABLE: ${param:siteTable}
+    USER_SITES_TABLE: ${param:userSiteTable}
+
+package:
+  individually: false
+  include:
+    - '!./**'
+    - './src/**'
+    - './lib/**'
+  exclude:
+    - '**'
+
+functions:
+  get:
+    handler: src/get.get
+    events:
+      - httpApi:
+          path: /sites/{id}
+          method: get
+
+  read:
+    handler: src/read.read
+    events:
+      - httpApi:
+          path: /sites
+          method: get
+          authorizer:
+            type: jwt
+            id: ${param:jwtAuthorizer}
+
+  create:
+    handler: src/create.create
+    events:
+      - httpApi:
+          path: /sites
+          method: post
+          authorizer:
+            type: jwt
+            id: ${param:jwtAuthorizer}
+
+  update:
+    handler: src/update.update
+    events:
+      - httpApi:
+          path: /sites/{id}
+          method: put
+          authorizer:
+            type: jwt
+            id: ${param:jwtAuthorizer}
+  delete:
+    handler: src/delete.delete
+    events:
+      - httpApi:
+          path: /sites/{id}
+          method: delete
+          authorizer:
+            type: jwt
+            id: ${param:jwtAuthorizer}
+  upload:
+    handler: src/upload.generate_url
+    environment:
+      SITES_BUCKET: ${param:sitesBucketName}
+    events:
+      - httpApi:
+          path: /sites/{id}/upload
+          method: post
+          authorizer:
+            type: jwt
+            id: ${param:jwtAuthorizer}

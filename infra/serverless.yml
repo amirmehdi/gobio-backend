@@ -1,0 +1,277 @@
+service: gobio-infra
+frameworkVersion: '3'
+
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+  memorySize: 128
+  timeout: 5
+  versionFunctions: false
+
+  httpApi:
+    cors:
+      allowedOrigins:
+        - https://gobiosite.com
+        - https://gobio.site
+        - http://localhost:3000
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+        - X-Amz-Date
+        - X-Api-Key
+        - X-Amz-Security-Token
+        - X-Amz-User-Agent
+        - X-Amzn-Trace-Id
+      allowedMethods:
+        - OPTIONS
+        - GET
+        - POST
+        - PUT
+        - DELETE
+      allowCredentials: false
+      maxAge: 0 # In seconds
+    authorizers:
+      JwtAuthorizer:
+        type: jwt
+        identitySource: $request.header.Authorization
+        issuerUrl:
+          Fn::Join:
+            - ""
+            - - "https://cognito-idp."
+              - "${self:provider.region}"
+              - ".amazonaws.com/"
+              - Ref: CognitoUserPool
+        audience:
+          - Ref: CognitoUserPoolClient
+
+functions:
+  config:
+    handler: handler.config
+    environment:
+      SITES_BUCKET: ${param:siteBucket}
+      USER_POOL_ID:
+        Ref: CognitoUserPool
+      CLIENT_ID:
+        Ref: CognitoUserPoolClient
+
+    events:
+      - httpApi:
+          path: /config
+          method: get
+
+
+resources:
+  Resources:
+    SitesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${param:siteTable}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    UserSitesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${param:userSiteTable}
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
+          - AttributeName: siteId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: username
+            KeyType: HASH
+          - AttributeName: siteId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+
+
+    SitesBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${param:siteBucket}
+        AccessControl: PublicRead
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - HEAD
+                - GET
+                - PUT
+                - POST
+              AllowedOrigins:
+                - '*'
+              ExposedHeaders:
+                - "Date"
+              Id: ${sls:stage}-sites-bucket-rule-id-1
+              MaxAge: 1800
+
+    SitesBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref SitesBucket
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 's3:GetObject'
+              Resource:
+                - !Join [ '/', [ !GetAtt [ SitesBucket, Arn ], '*' ] ]
+              Principal: '*'
+#              Condition:
+#                StringLike:
+#                  'aws:Referer':
+#                    - 'http://www.example.com/*'
+#                    - 'http://example.net/*'
+
+
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${param:userPoolName}
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireUppercase: true
+            RequireLowercase: true
+            RequireNumbers: true
+            RequireSymbols: true
+            TemporaryPasswordValidityDays: 7
+        LambdaConfig: { }
+        Schema:
+          - Name: "sub"
+            AttributeDataType: "String"
+            DeveloperOnlyAttribute: false
+            Mutable: false
+            Required: true
+            StringAttributeConstraints:
+              MinLength: "1"
+              MaxLength: "2048"
+          - Name: "name"
+            AttributeDataType: "String"
+            DeveloperOnlyAttribute: false
+            Mutable: true
+            Required: false
+            StringAttributeConstraints:
+              MinLength: "0"
+              MaxLength: "2048"
+          - Name: "email"
+            AttributeDataType: "String"
+            DeveloperOnlyAttribute: false
+            Mutable: true
+            Required: true
+            StringAttributeConstraints:
+              MinLength: "0"
+              MaxLength: "2048"
+          - Name: "email_verified"
+            AttributeDataType: "Boolean"
+            DeveloperOnlyAttribute: false
+            Mutable: true
+            Required: false
+          - Name: "updated_at"
+            AttributeDataType: "Number"
+            DeveloperOnlyAttribute: false
+            Mutable: true
+            Required: false
+            NumberAttributeConstraints:
+              MinValue: "0"
+        AutoVerifiedAttributes:
+          - "email"
+        UsernameAttributes:
+          - "email"
+        MfaConfiguration: "OPTIONAL"
+        EnabledMfas:
+          - "SOFTWARE_TOKEN_MFA"
+        EmailConfiguration:
+          EmailSendingAccount: "COGNITO_DEFAULT"
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: false
+        AccountRecoverySetting:
+          RecoveryMechanisms:
+            - Priority: 1
+              Name: "verified_email"
+        UsernameConfiguration:
+          CaseSensitive: false
+        VerificationMessageTemplate:
+          DefaultEmailOption: "CONFIRM_WITH_CODE"
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        UserPoolId: !Ref CognitoUserPool
+        ClientName: "web-app"
+        ReadAttributes:
+          - "email"
+          - "email_verified"
+          - "name"
+          - "updated_at"
+        WriteAttributes:
+          - "email"
+          - "name"
+          - "updated_at"
+        ExplicitAuthFlows:
+          - "ALLOW_CUSTOM_AUTH"
+          - "ALLOW_REFRESH_TOKEN_AUTH"
+          - "ALLOW_USER_SRP_AUTH"
+        PreventUserExistenceErrors: "ENABLED"
+        SupportedIdentityProviders:
+          - "COGNITO"
+        CallbackURLs:
+          - "https://example.com/auth/cb"
+        LogoutURLs:
+          - "https://example.com/auth/logout/cb"
+        AllowedOAuthFlows:
+          - "code"
+        AllowedOAuthScopes:
+          - "email"
+          - "openid"
+        AllowedOAuthFlowsUserPoolClient: true
+        IdTokenValidity: 60
+        AccessTokenValidity: 60
+        RefreshTokenValidity: 30
+        TokenValidityUnits:
+          AccessToken: "minutes"
+          IdToken: "minutes"
+          RefreshToken: "days"
+
+    CognitoUserPoolGroup:
+      Type: "AWS::Cognito::UserPoolGroup"
+      Properties:
+        GroupName: "pro"
+        UserPoolId: !Ref CognitoUserPool
+        Precedence: 2
+
+
+  Outputs:
+    SitesBucketName:
+      Value: !Ref SitesBucket
+      Description: site bucket name
+    SitesTableArn:
+      Description: sites table arn
+      Value:
+        Fn::GetAtt:  SitesTable.Arn
+    UserSitesTableArn:
+      Description: User sites table arn
+      Value:
+        Fn::GetAtt:  UserSitesTable.Arn
+    CognitoUserPoolID:
+      Value: !Ref CognitoUserPool
+      Description: The UserPool ID
+    CognitoAppClientID:
+      Value: !Ref CognitoUserPoolClient
+      Description: The app client
+    JWTAuthorizerId:
+      Value: !Ref HttpApiAuthorizerJwtAuthorizer
+      Description: jwt authorizer
+
+

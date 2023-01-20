@@ -1,0 +1,357 @@
+{
+	"info": {
+		"_postman_id": "a8eca2ea-e39d-4a40-93f6-d9aa7e2edd01",
+		"name": "gobio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "sites",
+			"item": [
+				{
+					"name": "get site",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/sites/mamad",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sites",
+								"mamad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create a site",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"mamad\",\n  \"template\": 1,\n  \"title\": \"mohammad ashrafian\",\n  \"desc\": \"developer\",\n  \"background\": \"background.jpg\",\n  \"color\": \"#ffffff\",\n  \"buttonColor\": \"\",\n  \"profile\": \"\",\n  \"og-title\": \"mohammad bio site\",\n  \"messenger\": [\n    {\n      \"app\": \"whatsapp\",\n      \"url\": \"+11234567890\",\n      \"order\": 1\n    },\n    {\n      \"app\": \"telegram\",\n      \"url\": \"mehdinaghavi\",\n      \"order\": 2\n    },\n\n    {\n      \"app\": \"email\",\n      \"url\": \"MEHDI@TGMAIL.COM\",\n      \"order\": 3\n    }\n  ],\n  \"social\": [\n    {\n      \"app\": \"whatsapp\",\n      \"url\": \"ali\",\n      \"order\": 1\n    },\n    {\n      \"app\": \"telegram\",\n      \"url\": \"pixel\",\n      \"order\": 2\n    },\n\n    {\n      \"app\": \"facebook\",\n      \"url\": \"amirmehdi\",\n      \"order\": 3\n    }\n  ],\n\n  \"body\": [\n    {\n      \"type\": \"button\",\n      \"order\": 1,\n      \"url\": \"https://google.com\",\n      \"title\": \"button sample\",\n      \"desc\": \"text for button\",\n      \"icon\": \"\",\n      \"layout\": \"\",\n      \"color\": \"\",\n      \"textColor\": \"\",\n      \"effect\": \"\",\n      \"hide\": false,\n      \"schedule\": {\n        \"from\": \"\",\n        \"to\": \"\"\n      }\n    },\n    {\n      \"type\": \"countdown\",\n      \"order\": 2,\n      \"url\": \"https://google.com\",\n      \"title\": \"button sample\",\n      \"desc\": \"text for button\",\n      \"icon\": \"\",\n      \"layout\": \"\",\n      \"color\": \"\",\n      \"textColor\": \"\",\n      \"effect\": \"\",\n      \"hide\": false,\n      \"timer\": {\n        \"from\": \"\",\n        \"to\": \"\"\n      },\n      \"schedule\": {\n        \"from\": \"\",\n        \"to\": \"\"\n      }\n    },\n    {\n      \"type\": \"text\",\n      \"order\": 3,\n      \"url\": \"https://google.com\",\n      \"title\": \"button sample\",\n      \"desc\": \"text for button\",\n      \"icon\": \"\",\n      \"layout\": \"\",\n      \"color\": \"\",\n      \"textColor\": \"\",\n      \"effect\": \"\",\n      \"hide\": false,\n      \"schedule\": {\n        \"from\": \"\",\n        \"to\": \"\"\n      }\n    },\n    {\n      \"type\": \"feed\",\n      \"order\": 4,\n      \"source\": \"rssLink\",\n      \"address\": \"https://www.youtube.com/feeds/videos.xml?channel_id=UCNbfqCkmHEyf1CVKjuhEW_A\",\n      \"layout\": \"\",\n      \"items\": 5\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/sites",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sites"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list sites of user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/sites",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sites"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete site",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/sites/id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sites",
+								"id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update site",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJraWQiOiI2Q0xXV3BvaHVFM1VxRjZDXC9LSDEyeXRwa1k4Zlwvd09IN3lwWFFzOGNDa289IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiIyNTY4Y2MwMy1mMzU0LTRlNDMtYWFjMS0xMDczYjYxM2MwNjMiLCJjb2duaXRvOmdyb3VwcyI6WyJwcm8iXSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfUU40cnE0aGV6IiwidmVyc2lvbiI6MiwiY2xpZW50X2lkIjoiNmo0azFrdjYzaHYxaWRxdW5wYnFyNTN2bGoiLCJldmVudF9pZCI6Ijg1Y2MzMTNkLTVkMjAtNDk5Mi04ODlkLTFkYWI4MmU0YWI0MyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoib3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNjcxNTk5MzQxLCJleHAiOjE2NzE2MDI5NDEsImlhdCI6MTY3MTU5OTM0MSwianRpIjoiMDk5YzgzYTktZGExMC00NTk0LWFlYmUtZWRiZjE2NDU5YmNjIiwidXNlcm5hbWUiOiIyNTY4Y2MwMy1mMzU0LTRlNDMtYWFjMS0xMDczYjYxM2MwNjMifQ.ZXKYdinZCoe-YrwFTPMRtngLTACnR5J7o2HMO_1c4rUl-iy5_XM7YRT8qS5ODWRVTDI_83aw1JHj01W7vp9F3UMKIgU2dENtWnKd4snTTuJg9HxKVD6Zs9ECwCnA_o4KdRVN9gDFoENlzYqFv_afbLUN_saSG0wBsK4SsPjeGRroCcj1m2XRhshOG8YKwi1t5Nb2YrDpSQkt9lywr7bhxJfRw2UbM0qW0W93mik_Lj0LT9MpFLfPWmPjjZ_sz2TtuUBfoLTmBqA9MOXuvZXa3olt8u3m5GJjdnAgwOfotYu2HQZJRUaJbtpfQch2vmsxKfH_6dLHPl8y3AWASGqyDw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"mamad\",\n  \"template\": 1,\n  \"title\": \"mohammad ashrafian\",\n  \"desc\": \"developer\",\n  \"background\": \"background.jpg\",\n  \"color\": \"#ffffff\",\n  \"buttonColor\": \"\",\n  \"profile\": \"\",\n  \"og-title\": \"mohammad bio site\",\n  \"messenger\": [\n    {\n      \"app\": \"whatsapp\",\n      \"url\": \"+11234567890\",\n      \"order\": 1\n    },\n    {\n      \"app\": \"telegram\",\n      \"url\": \"mehdinaghavi\",\n      \"order\": 2\n    },\n\n    {\n      \"app\": \"email\",\n      \"url\": \"MEHDI@TGMAIL.COM\",\n      \"order\": 3\n    }\n  ],\n  \"social\": [\n    {\n      \"app\": \"whatsapp\",\n      \"url\": \"ali\",\n      \"order\": 1\n    },\n    {\n      \"app\": \"telegram\",\n      \"url\": \"pixel\",\n      \"order\": 2\n    },\n\n    {\n      \"app\": \"facebook\",\n      \"url\": \"amirmehdi\",\n      \"order\": 3\n    }\n  ],\n\n  \"body\": [\n    {\n      \"type\": \"button\",\n      \"order\": 1,\n      \"url\": \"https://google.com\",\n      \"title\": \"button sample\",\n      \"desc\": \"text for button\",\n      \"icon\": \"\",\n      \"layout\": \"\",\n      \"color\": \"\",\n      \"textColor\": \"\",\n      \"effect\": \"\",\n      \"hide\": false,\n      \"schedule\": {\n        \"from\": \"\",\n        \"to\": \"\"\n      }\n    },\n    {\n      \"type\": \"countdown\",\n      \"order\": 2,\n      \"url\": \"https://google.com\",\n      \"title\": \"button sample\",\n      \"desc\": \"text for button\",\n      \"icon\": \"\",\n      \"layout\": \"\",\n      \"color\": \"\",\n      \"textColor\": \"\",\n      \"effect\": \"\",\n      \"hide\": false,\n      \"timer\": {\n        \"from\": \"\",\n        \"to\": \"\"\n      },\n      \"schedule\": {\n        \"from\": \"\",\n        \"to\": \"\"\n      }\n    },\n    {\n      \"type\": \"text\",\n      \"order\": 3,\n      \"url\": \"https://google.com\",\n      \"title\": \"button sample\",\n      \"desc\": \"text for button\",\n      \"icon\": \"\",\n      \"layout\": \"\",\n      \"color\": \"\",\n      \"textColor\": \"\",\n      \"effect\": \"\",\n      \"hide\": false,\n      \"schedule\": {\n        \"from\": \"\",\n        \"to\": \"\"\n      }\n    },\n    {\n      \"type\": \"feed\",\n      \"order\": 4,\n      \"source\": \"rssLink\",\n      \"address\": \"https://www.youtube.com/feeds/videos.xml?channel_id=UCNbfqCkmHEyf1CVKjuhEW_A\",\n      \"layout\": \"\",\n      \"items\": 5\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/sites/mamad",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sites",
+								"mamad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generate upload link",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/sites/mamad/upload",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sites",
+								"mamad",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload image",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "key",
+									"value": "mamad/45.png",
+									"type": "text"
+								},
+								{
+									"key": "AWSAccessKeyId",
+									"value": "ASIA4IGF45DAEW6DZ6JX",
+									"type": "text"
+								},
+								{
+									"key": "x-amz-security-token",
+									"value": "FwoGZXIvYXdzEIv//////////wEaDMbr7u0/Z22d/EbtYiKRAv9WDvCZDpbn9RTe3obh1w05sCb0Cl/PAR+Lmqd78x+Wxp3/gdsEbXpT981h6fb2bgcIVoRNgmMeqMOhQdXJGfPiNhIR2JS2dkURpoQ1I5GQtEEjcK17jqsVBTL8J1m9sQ09X/li3XCkhqEGKfH/U2anhDagLzSQo3quvSDUD2t01sDOL7cMl3EwtXMD0dzTusNq/IMPIi43uTD++ZXLmoR25qKmiYpKdRCBK12GBTe4p3CJ09u1mXRMapXsxPwIN4fIiALwZfu48NKtJcMzKA23JJJNMGTPDQmtw05C77p44qgOcxxD5zz6AWzJzXIMxkEBJf7/HvORzfVM8nxzpmvBoBGy511iYMBeT2SNqf0z6Cjz/5OdBjIu6NxIoZjNv4sRB5T/mBipewAx+I2akI8WyuLBAqQVam3MQV6D0NOA77YaJbeiKA==",
+									"type": "text"
+								},
+								{
+									"key": "policy",
+									"value": "eyJleHBpcmF0aW9uIjogIjIwMjItMTItMjNUMDI6MTA6MTJaIiwgImNvbmRpdGlvbnMiOiBbWyJzdGFydHMtd2l0aCIsICIkQ29udGVudC1UeXBlIiwgImltYWdlLyJdLCBbInN0YXJ0cy13aXRoIiwgIiRrZXkiLCAibWFtYWQvIl0sIFsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAxLCAxMDQ4NTc2XSwgeyJidWNrZXQiOiAiZGV2LXNpdGVzLWJ1Y2tldCJ9LCBbInN0YXJ0cy13aXRoIiwgIiRrZXkiLCAibWFtYWQvIl0sIHsieC1hbXotc2VjdXJpdHktdG9rZW4iOiAiRndvR1pYSXZZWGR6RUl2Ly8vLy8vLy8vL3dFYURNYnI3dTAvWjIyZC9FYnRZaUtSQXY5V0R2Q1pEcGJuOVJUZTNvYmgxdzA1c0NiMENsL1BBUitMbXFkNzh4K1d4cDMvZ2RzRWJYcFQ5ODFoNmZiMmJnY0lWb1JOZ21NZXFNT2hRZFhKR2ZQaU5oSVIySlMyZGtVUnBvUTFJNUdRdEVFamNLMTdqcXNWQlRMOEoxbTlzUTA5WC9saTNYQ2tocUVHS2ZIL1UyYW5oRGFnTHpTUW8zcXV2U0RVRDJ0MDFzRE9MN2NNbDNFd3RYTUQwZHpUdXNOcS9JTVBJaTQzdVREKytaWExtb1IyNXFLbWlZcEtkUkNCSzEyR0JUZTRwM0NKMDl1MW1YUk1hcFhzeFB3SU40ZklpQUx3WmZ1NDhOS3RKY016S0EyM0pKSk5NR1RQRFFtdHcwNUM3N3A0NHFnT2N4eEQ1eno2QVd6SnpYSU14a0VCSmY3L0h2T1J6ZlZNOG54enBtdkJvQkd5NTExaVlNQmVUMlNOcWYwejZDanovNU9kQmpJdTZOeElvWmpOdjRzUkI1VC9tQmlwZXdBeCtJMmFrSThXeXVMQkFxUVZhbTNNUVY2RDBOT0E3N1lhSmJlaUtBPT0ifV19",
+									"type": "text"
+								},
+								{
+									"key": "signature",
+									"value": "jG/hfhlUM3TRxWIxbjUX6ApieGE=",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "image/png",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/amirmehdi/Desktop/BITRAFI LOGO V00/logos/PNG/Asset 15.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://dev-sites-bucket.s3.amazonaws.com/",
+							"protocol": "https",
+							"host": [
+								"dev-sites-bucket",
+								"s3",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "/auth/token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "6j4k1kv63hv1idqunpbqr53vlj",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "7a3ce984-9f03-409d-9293-495937dd9acf",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://example.com/auth/cb",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://gobio.auth.us-east-1.amazoncognito.com/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"gobio",
+								"auth",
+								"us-east-1",
+								"amazoncognito",
+								"com"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth/authorize",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://gobio.auth.us-east-1.amazoncognito.com/oauth2/authorize?client_id=6j4k1kv63hv1idqunpbqr53vlj&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fexample.com%2Fauth%2Fcb",
+							"protocol": "https",
+							"host": [
+								"gobio",
+								"auth",
+								"us-east-1",
+								"amazoncognito",
+								"com"
+							],
+							"path": [
+								"oauth2",
+								"authorize"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": "6j4k1kv63hv1idqunpbqr53vlj"
+								},
+								{
+									"key": "response_type",
+									"value": "code"
+								},
+								{
+									"key": "scope",
+									"value": "email+openid"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https%3A%2F%2Fexample.com%2Fauth%2Fcb"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "https://8vcstae1f6.execute-api.us-east-1.amazonaws.com"
+		},
+		{
+			"key": "token",
+			"value": "eyJraWQiOiI2Q0xXV3BvaHVFM1VxRjZDXC9LSDEyeXRwa1k4Zlwvd09IN3lwWFFzOGNDa289IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiIyNTY4Y2MwMy1mMzU0LTRlNDMtYWFjMS0xMDczYjYxM2MwNjMiLCJjb2duaXRvOmdyb3VwcyI6WyJwcm8iXSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfUU40cnE0aGV6IiwidmVyc2lvbiI6MiwiY2xpZW50X2lkIjoiNmo0azFrdjYzaHYxaWRxdW5wYnFyNTN2bGoiLCJldmVudF9pZCI6ImI1MjFmYzYzLWFhMzEtNDgxYi1iZDVlLTc1M2UyZDI1ZGNiNiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoib3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNjcxODIzMDAyLCJleHAiOjE2NzE4MjY2MDIsImlhdCI6MTY3MTgyMzAwMiwianRpIjoiODU5ZjA2ODctOTVjYi00YzJhLThmOWQtOGE3MDk0YzNjOWMyIiwidXNlcm5hbWUiOiIyNTY4Y2MwMy1mMzU0LTRlNDMtYWFjMS0xMDczYjYxM2MwNjMifQ.QoNSHKLqUtoQMgImUP3RRvw2KTDTU1pBIk101JDghpl79vE-yZBPgdreVm65XBTj9YaYwUPcoHE0TKQfxrBryGpDciAKDQB-BLi1hkWB3T6Eis4P013gVMGDAKJE35VCwjC6kNNzakUPT-jRiRjvU2foJYtOMzvSJ-OKwWdyvpR6caSRETC05PdDODOQf1V1dplD1uhjXqBLvNljxAZRGBo5yYAFVQ65kYY0Bhd7UKUdgO7k1kjrbFV9DluwuR7b3ajTDCwVQW4t5SAU1e2DcsjOuxFW3mOGPT8WloI2gEyvMcbew16kP3lWX85ljuoSJpL75vjONS7aH3eCBZj9nA"
+		}
+	]
+}
