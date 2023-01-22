@@ -69,29 +69,24 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${param:siteTable}
+        BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id
+            AttributeType: S
+          - AttributeName: username
             AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-        BillingMode: PAY_PER_REQUEST
-
-    UserSitesTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${param:userSiteTable}
-        AttributeDefinitions:
-          - AttributeName: username
-            AttributeType: S
-          - AttributeName: siteId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: username
-            KeyType: HASH
-          - AttributeName: siteId
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: "UsernameIndex"
+            KeySchema:
+              - AttributeName: "username"
+                KeyType: HASH
+              - AttributeName: "id"
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
 
 
     SitesBucket:
@@ -260,10 +255,6 @@ resources:
       Description: sites table arn
       Value:
         Fn::GetAtt:  SitesTable.Arn
-    UserSitesTableArn:
-      Description: User sites table arn
-      Value:
-        Fn::GetAtt:  UserSitesTable.Arn
     CognitoUserPoolID:
       Value: !Ref CognitoUserPool
       Description: The UserPool ID

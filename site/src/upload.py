@@ -1,12 +1,13 @@
 import os
 
 import boto3
+from boto3.dynamodb.conditions import Key
 
 from utils.decorators import cors_headers, json_http_resp
 
 s3 = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
-user_sites_table = dynamodb.Table(os.environ['USER_SITES_TABLE'])
+sites_table = dynamodb.Table(os.environ['SITES_TABLE'])
 bucket = os.environ['SITES_BUCKET']
 
 
@@ -15,13 +16,11 @@ bucket = os.environ['SITES_BUCKET']
 def generate_url(event, context):
     site_id = event['pathParameters']['id']
     username = event['requestContext']['authorizer']['jwt']['claims']['username']
-    result = user_sites_table.get_item(
-        Key={
-            'username': username,
-            'siteId': site_id
-        }
+    result = sites_table.query(
+        IndexName='UsernameIndex',
+        KeyConditionExpression=Key('username').eq(username) & Key('id').eq(site_id)
     )
-    if 'Item' not in result:
+    if len(result["Items"]) == 0:
         return {
             "statusCode": 403,
             "body": {"message": "forbidden"}

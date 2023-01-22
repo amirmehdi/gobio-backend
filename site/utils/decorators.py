@@ -1,7 +1,7 @@
 import json
 from functools import wraps
 
-from lib import decimal_encoder
+from utils import decimal_encoder
 
 
 def cors_headers(handler_or_origin=None, origin=None, credentials=False):
@@ -60,13 +60,18 @@ def json_http_resp(handler_or_none=None, **json_dumps_kwargs):
             def wrapper(event, context):
                 try:
                     resp = handler(event, context)
-                    if isinstance(resp, dict):
+                    if isinstance(resp, dict) :
                         status = resp.pop('statusCode', 200)
-                        headers = resp.pop('headers', None)
+                        headers = resp.pop('headers', {})
+                        headers['Content-Type'] = 'application/json'
                         body = resp.pop('body', {})
+                    elif isinstance(resp, list):
+                        status = 200
+                        headers = {'Content-Type': 'application/json'}
+                        body = resp
                     elif isinstance(resp, str):
                         status = 200
-                        headers = None
+                        headers = {'Content-Type': 'application/json'}
                         body = {'message': resp}
                     else:
                         # raise Exception("response type is not supported")

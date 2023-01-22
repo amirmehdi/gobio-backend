@@ -23,7 +23,7 @@ provider:
             - dynamodb:DeleteItem
           Resource:
             - ${param:sitesTableArn}
-            - ${param:userSitesTableArn}
+            - ${param:sitesTableArn}/*
 
         - Effect: "Allow"
           Action:
@@ -37,14 +37,13 @@ provider:
 
   environment:
     SITES_TABLE: ${param:siteTable}
-    USER_SITES_TABLE: ${param:userSiteTable}
 
 package:
   individually: false
   include:
     - '!./**'
     - './src/**'
-    - './lib/**'
+    - './utils/**'
   exclude:
     - '**'
 

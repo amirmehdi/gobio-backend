@@ -6,7 +6,6 @@ services:
     params:
       userPoolName: ${sls:stage}-${env:USER_POOL}
       siteTable: ${sls:stage}-${env:SITES_TABLE}
-      userSiteTable: ${sls:stage}-${env:USER_SITES_TABLE}
       siteBucket: ${sls:stage}-${env:SITES_BUCKET}
 
   site:
@@ -14,12 +13,10 @@ services:
     dependsOn: infra
     params:
       sitesTableArn: ${infra.SitesTableArn}
-      userSitesTableArn: ${infra.UserSitesTableArn}
       sitesBucketName: ${infra.SitesBucketName}
       userPoolID: ${infra.CognitoUserPoolID}
       clientPoolId1: ${infra.CognitoAppClientID}
       siteTable: ${sls:stage}-${env:SITES_TABLE}
-      userSiteTable: ${sls:stage}-${env:USER_SITES_TABLE}
       HttpApiId: ${infra.HttpApiId}
       jwtAuthorizer: ${infra.JWTAuthorizerId}
 
