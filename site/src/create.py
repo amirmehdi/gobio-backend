@@ -32,7 +32,7 @@ def create(event, context):
     except Exception:
         return {
             "statusCode": 400,
-            "body": "site exists"
+            "body": {"message": "site exists"}
         }
     return {
         "statusCode": 201,
