@@ -13,11 +13,17 @@ sites_table = dynamodb.Table(os.environ['SITES_TABLE'])
 def delete(event, context):
     site_id = event['pathParameters']['id']
     username = event['requestContext']['authorizer']['jwt']['claims']['username']
-    sites_table.delete_item(
-        Key={
-            'id': site_id
-        },
-        ConditionExpression='attribute_exists(id) and username = #username',
-        ExpressionAttributeNames={"#username": username}
-    )
+    try:
+        sites_table.delete_item(
+            Key={
+                'id': site_id
+            },
+            ConditionExpression='attribute_exists(id) and id = :id and username = :username',
+            ExpressionAttributeValues={":id": site_id, ":username": username}
+        )
+    except Exception:
+        return {
+            "statusCode": 403,
+            "body": {"message": "forbidden"}
+        }
     return "site deleted successfully"

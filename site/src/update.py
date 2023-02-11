@@ -20,8 +20,14 @@ def update(event, context):
     data['id'] = site_id
     data['username'] = username
     data['updatedAt'] = timestamp
-    sites_table.put_item(Item=data,
-                         ConditionExpression='attribute_exists(id) and username = #username',
-                         ExpressionAttributeNames={"#username": username}
-                         )
+    try:
+        sites_table.put_item(Item=data,
+                             ConditionExpression='attribute_exists(id) and id = :id and username = :username',
+                             ExpressionAttributeValues={":id": site_id, ":username": username}
+                             )
+    except Exception:
+        return {
+            "statusCode": 403,
+            "body": {"message": "forbidden"}
+        }
     return "site updated"

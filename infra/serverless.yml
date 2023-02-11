@@ -15,6 +15,7 @@ provider:
     cors:
       allowedOrigins:
         - https://gobiosite.com
+        - https://editor.gobiosite.com
         - https://gobio.site
         - http://localhost:3000
       allowedHeaders:

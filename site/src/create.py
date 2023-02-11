@@ -26,8 +26,14 @@ def create(event, context):
     data['createdAt'] = timestamp
     data['updatedAt'] = timestamp
     data['username'] = event['requestContext']['authorizer']['jwt']['claims']['username']
-    sites_table.put_item(Item=data,
-                         ConditionExpression='attribute_not_exists(id)')
+    try:
+        sites_table.put_item(Item=data,
+                             ConditionExpression='attribute_not_exists(id)')
+    except Exception:
+        return {
+            "statusCode": 400,
+            "body": "site exists"
+        }
     return {
         "statusCode": 201,
         "body": data
