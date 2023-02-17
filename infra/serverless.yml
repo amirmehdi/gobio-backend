@@ -17,6 +17,7 @@ provider:
         - https://gobiosite.com
         - https://editor.gobiosite.com
         - https://gobio.site
+        - https://www.gobio.site
         - http://localhost:3000
       allowedHeaders:
         - Content-Type
